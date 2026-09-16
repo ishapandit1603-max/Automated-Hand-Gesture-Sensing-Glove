@@ -1,0 +1,26 @@
+#include <Wire.h>
+#include <MPU6050_light.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+
+MPU6050 mpu(Wire);
+
+const char* ssid = "Your_SSID";        // Replace with your Wi-Fi SSID
+const char* password = "Your_PASSWORD"; // Replace with your Wi-Fi Password
+const char* serverUrl = "http://your-server-url.com/upload"; // Replace with your server URI
+
+void setup() {
+  Serial.begin(9600);
+  Wire.begin();
+
+  // Initialize MPU6050
+  mpu.begin();
+  delay(1000);
+  mpu.calcGyroOffsets(); // Calculate offsets (recommended during setup)
+
+  // Initialize Wi-Fi
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
